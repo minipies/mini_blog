@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}文章详情{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/article/detail.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="w">
+            <div class="detail">
+                <div class="arti">
+                    <h2 class="title">{{ article.title }}</h2>
+                    <div class="star">
+                        <div class="left">
+                            <span class="author">作者</span>{{ article.author.username }}
+                            &emsp;
+                            <span class="pub">发布时间</span> {{ article.pub_time }}
+                        </div>
+                        <div class="right">
+                        <span class="click">点击量
+                            <i class="iconfont">&#xe83c;</i>
+                            <span data-t="0">{{ article.click_num }}</span>
+                        </span>
+
+                            <span class="save">收藏
+                            <i class="iconfont">&#xe83a;</i>
+                           <span data-t="0">{{ article.save_num }}</span>
+                        </span>
+
+                            <span class="love">点赞量
+                            <i class="iconfont">&#xe83d;</i>
+                            <span data-t="0">{{ article.love_num }}</span>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="content">{{ article.content | safe }}</div>
+                </div> <!---->
+                <hr class="line">
+
+                <div class="comment-box">
+                    <p>
+                        <img src="{{ url_for('static', filename=user.avatar) }}" alt="">
+                        文章评论:
+                    </p>
+                    <div class="form-comment">
+                        <form action="{{ url_for('article.publish_comment') }}" method="post">
+                            <input type="hidden" name="aid" value="{{ article.art_id }}">
+                            <textarea name="comment" maxlength="255">写下你想说的，开始我们的对话
+                            </textarea>
+                            <div class="charCount">
+                                <p>还能输入<span id="Chars">255</span>个字符</p>
+                                <button type="submit" class="btn-cmt">评论</button>
+                            </div>
+                        </form>
+                    </div>
+                    <hr class="line">
+                </div> <!---->
+
+                <div class="comments"> <!---->
+                    {% if comments.items %}
+                        {% for comment in comments.items %}
+                            <div class="cmts">
+                                <div id="item_left">
+                                    <img src="{% if comment.user.avatar %} {{ url_for('static',filename=comment.user.avatar) }} {% else %}{{ url_for('static',filename='images/tx.jpg') }}{% endif %}" alt="">
+                                </div>
+                                <div id="item_right">
+                                    <p>
+                                        <span class="user">{{ comment.user.username }}</span>
+                                        &emsp;
+                                        <span class="cmtt">{{ comment.cmt_time }}</span>
+                                    </p>
+                                    <p class="cmt">
+                                        {{ comment.comment }}
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="item">
+                            当前文章还没有任何评论，赶快发表意见吧～～～～
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="paginate">
+                    <div class="pagination">
+                        <ul class="pager">
+                            <li class="previous{% if not comments.has_prev %} disabled {% endif %}">
+                                <a href="{{ url_for('article.article_detail') }}?page={{ comments.prev_num }}&aid={{ article.art_id }}">
+                                    <span>&larr;</span> 上一页</a>
+                            </li>
+
+                            <li class="next{% if not comments.has_next %} disabled {% endif %}">
+                                <a href="{{ url_for('article.article_detail') }}?page={{ comments.next_num }}&aid={{ article.art_id }}">
+                                    下一页<span>&rarr;</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        $(function () {
+            $('.save i').click(function () {  // 收藏
+            })
+            $('.love i').click(function () {  // 点赞
+                let $this = $(this)
+                let t = $this.next('span').data('t')
+                console.log(t, typeof (t))
+                $.get(
+                    '{{ url_for('article.article_love') }}',
+                    {aid: {{article.art_id}}, t: t},
+                    function (data) {
+                        $this.next('span').text(data.num)
+                    }
+                );
+                if (t === 1) {
+                    $this.css({'color': 'black'})
+                    $this.next('span').data('t', 0)
+                } else {
+                    $this.css({'color': 'red'})
+                    $this.next('span').data('t', 1)
+                }
+            });
+        })
+    </script>
+    <script src="{{ url_for('static', filename='js/article/detail.js') }}"></script>
+{% endblock %}

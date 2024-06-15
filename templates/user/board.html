@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    用户留言
+{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/article/detail.css') }}">
+    <script src="{{ url_for('static', filename='js/article/detail.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="w msg-bd">
+            <div class="comment-box">
+                <p>
+                    <img src="{% if user %}
+                    	{{ url_for('static', filename=user.avatar) }}
+                    {% else %}
+                    	{{ url_for('static',filename='images/tx.png') }}
+                    {% endif %} " alt="">
+                    用户留言:
+                </p>
+                <div class="form-comment">
+                    <form action="{{ url_for('user.show_board') }}" method="post">
+                        <textarea name="board" maxlength="255">写下你想说的，开始我们的对话
+                            </textarea>
+                        <div class="charCount">
+                            <p>还能输入<span id="Chars">255</span>个字符</p>
+                            <button type="submit" class="btn-cmt">留言</button>
+                        </div>
+                    </form>
+                </div>
+                <hr class="line">
+            </div> <!---->
+
+            <div class="comments"> <!---->
+                {% if boards.items %}
+                    {% for board in boards.items %}
+                        <div class="cmts">
+                            <div id="item_left">
+                                <img src="{% if board.user.avatar %}
+                                            {{ url_for('static',filename=board.user.avatar) }}
+                                        {% else %}
+                                            {{ url_for('static',filename='images/tx.png') }}
+                                        {% endif %}" alt="">
+                            </div>
+                            <div id="item_right">
+                                <p>
+                                    <span class="user">
+                                        {% if not board.user_id %}
+                                        	匿名用户
+                                        {% else %}
+                                            {{ board.user.username }}
+                                        {% endif %}
+                                    </span>
+                                    &emsp;
+                                    <span class="cmtt">{{ board.bd_time }}</span>
+                                </p>
+                                <p class="cmt">{{ board.content }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="item">
+                        当前文章还没有任何留言，赶快发表意见吧～～～～
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="paginate">
+                <div class="pagination">
+                    <ul class="pager">
+                        <li class="previous{% if not boards.has_prev %} disabled {% endif %}">
+                            <a href="{{ url_for('user.show_board') }}?page={{ boards.prev_num }}">
+                                <span>&larr;</span>上一页</a>
+                        </li>
+
+                        <li class="next{% if not boards.has_next %} disabled {% endif %}">
+                            <a href="{{ url_for('user.show_board') }}?page={{ boards.next_num }}">
+                                下一页<span>&rarr;</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

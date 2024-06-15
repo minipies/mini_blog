@@ -1,0 +1,138 @@
+{% block doc -%}
+    <!DOCTYPE html>
+    <html{% block html_attribs %}{% endblock html_attribs %}>
+    {%- block html %}
+        <head>
+            {%- block head %}
+                <meta charset="utf-8">
+                <meta name="viewport"
+                      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                {%- block metas -%}{%- endblock metas -%}
+                <title>{% block title %}{{ title|default('Flask') }}{% endblock title %}</title>
+                <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+                <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+                <link rel="stylesheet" href="{{ url_for('static', filename='iconfont/iconfont.css') }}">
+                <script src="{{ url_for('static', filename='js/base/base.js') }}"></script>
+                <script src="{{ url_for('static', filename='js/base/alpha.js') }}"></script>
+                <script src="{{ url_for('static', filename='js/form-serialize.js') }}"></script>
+                <script src="{{ url_for('static', filename='js/jquery-3.7.1.js') }}"></script>
+                {%- block styles %}{%- endblock styles %}
+                {%- block links -%}{%- endblock -%}
+            {%- endblock head -%}
+        </head>
+        <body{% block body_attribs %}{% endblock body_attribs %}>
+        {%- block body -%}
+            <canvas></canvas>
+            {% block nav %}
+                <nav class="nav">
+                    <div class="w">
+                        <div class="container-fluid">
+                            <div class="logo"> <!--111-->
+                                <h1><a href="">迷你博客</a></h1>
+                            </div>
+                            <div class="collapse navbar-collapse">
+                                <!--333333333333-->
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        <a href="/">首页</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url_for('user.show_about_me') }}">关于我</a>
+                                    </li>
+                                    <li class="dropdown dropdown">
+                                        <a href="" class="dropdown-toggle">文章分类</a>
+                                        <i class="iconfont">&#xe83b;</i>
+                                        <ul class="dropdown-menu">
+                                            {% for tag in tags %}
+                                                <li class="dropdown-item">
+                                                    <a href="{{ url_for('article.tag_search') }}?tid={{ tag.tag_id }}">{{ tag.name }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url_for('user.my_photo') }}">我的相册</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url_for('user.show_board') }}">留言板</a>
+                                    </li>
+                                    <li>
+                                        <form action="" class="nav-search">
+                                            <input type="search" name="search" placeholder="Search">
+                                            <button id="search" class="btn-search" type="button">Search</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                                <!--444444444444-->
+                                <div class="nav-user">
+                                    <ul>
+                                        {% if user %}
+                                            <li>
+                                                <img src="{% if user.avatar %}
+                                                	{{ url_for('static',filename=user.avatar) }}
+                                                {% else %}
+                                                	{{ url_for('static',filename='images/tx.png') }}
+                                                {% endif %} " alt="">
+                                            </li>
+                                            <li class="dropdown dropdown">
+                                                <a href="" class="dropdown-toggle">欢迎 {{ user.username }}</a>
+                                                <i class="iconfont">&#xe83b;</i>
+                                                <ul class="dropdown-menu">
+                                                    <li class="dropdown-item"><a
+                                                            href="{{ url_for('user.user_center') }}">用户中心</a></li>
+                                                    <li class="dropdown-item"><a href="{{ url_for('user.logout') }}">退出登录</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        {% else %}
+                                            <li>
+                                                <a href="{{ url_for('user.login') }}">登录</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ url_for('user.register') }}">注册</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </nav>
+            {%- endblock nav -%}
+
+            {% block contents -%}
+
+                {% block content %}
+                    <h1>Hello Flask</h1>
+                {% endblock content -%}
+
+                {% block footer %}
+                    <footer class="footer">
+                        <div class="footer_links">
+                            <a href="">关于我们</a>
+                            <span>|</span>
+                            <a href="">联系我们</a>
+                            <span>|</span>
+                            <a href="">招聘人才</a>
+                            <span>|</span>
+                            <a href="">友情链接</a>
+                        </div>
+                        <p class="copyright">
+                            CopyRight © 2004~2024&emsp;四川泸州沃痕牛逼科技有限公司&emsp;All Rights Reserved<br>
+                            电话：010-110120119 京ICP备1008668号
+                        </p>
+                    </footer>
+                {%- endblock footer -%}
+
+            {%- endblock contents -%}
+
+            {% block scripts -%}{%- endblock scripts -%}
+
+        {%- endblock body -%}
+        </body>
+    {%- endblock html -%}
+    </html>
+{% endblock doc -%}

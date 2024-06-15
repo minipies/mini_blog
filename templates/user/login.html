@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}用户登录{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/login.css') }}">
+    <script src="{{ url_for('static', filename='css/user/login.css') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="logins">
+        <div class="w">
+            <div class="user-login">
+                <h1>用户登录</h1>
+                <div class="tab">
+                    <span class="sub-tab">用户名/密码</span>
+                    <span>|</span>
+                    <span class="sub-tab">邮箱登录</span>
+                    <p class="tips">{{ msg }}</p>
+                </div>
+            </div>
+
+            <div class="login-item">
+                <form action="{{ url_for('user.login') }}?f=1" method="post">
+                    <div class="form-group">
+                        <label for="inputUsername" class="form-label">用户名</label>
+                        <div class="form-input">
+                            <input name="username" required type="text" id="inputUsername" placeholder="请输入用户名">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword" class="form-label">密码</label>
+                        <div class="form-input">
+                            <input name="password" required type="password" id="inputPassword" placeholder="请输入密码">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="form-label"></label>
+                        <div class="form-btn">
+                            <button type="submit" class="btn-primary">Login in</button>
+                            <button type="reset" class="btn-primary">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="login-item">
+                <form action="{{ url_for('user.login') }}?f=2" method="post">
+                    <div class="form-group">
+                        <label for="inputEmail" class="form-label">邮箱</label>
+                        <div class="form-input">
+                            <input name="email" required type="email" id="inputEmail" placeholder="请输入邮箱">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmCode" class="form-label">验证码</label>
+                        <div class="form-input">
+                            <input name="yzm" type="number" id="confirmCode" placeholder="邮箱验证码">
+                            <button type="button" class="btn-send btn-primary">发送验证码</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="form-label"></label>
+                        <div class="form-btn">
+                            <button type="submit" class="btn-primary">Sign in</button>
+                            <button type="reset" class="btn-primary">Reset</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(function () {
+            let logins = $('.login-item')
+            logins.hide()
+            logins.first().show()
+            $(".tab .sub-tab").each(function (i) {
+                $(this).click(function () {
+                    logins.hide();
+                    logins.eq(i).show();
+                })
+            });
+            $('.btn-send').click(function (e) {
+                let $this = $(this)
+                let email = $('#inputEmail').val()
+                if (/^[1-9]\d{3,10}@qq\.com$/.test(email)) {
+                    $.get(
+                        '{{ url_for("user.send_email_capcha") }}',
+                        {email},
+                        function (data) {
+                            console.log(data)
+                            if (data.status === 200) {
+                                alert(data.msg)
+                            } else {
+                                alert(data.msg)
+                            }
+                        }
+                    )
+                    console.log(this, $(this))
+                    let countDown = 60;
+                    $this.prop('disabled', true)
+                    $this.css({'cursor': 'not-allowed'})
+                    let cdInterval = setInterval(function () {
+                        countDown--;
+                        $this.text(`${countDown}秒后重发`).css({'color': '#000'})
+                        if (countDown <= 0) {
+                            clearInterval(cdInterval)
+                            $this.prop('disabled', false)
+                            $this.text('发送验证码').css({'color': '#fff'});
+                        }
+                    }, 1000)
+                } else {
+                    alert('邮箱格式不正确')
+                }
+            });
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}用户许可协议{% endblock %}
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/protocol.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="w">
+            <div class="pro">
+                <span>无</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        let pro = document.querySelector('.pro')
+        for (let i = 0; i < 50; i++) {
+            let span = document.createElement('span')
+            span.textContent = '无'
+            pro.append(span)
+        }
+
+        function getRandomColor() {
+            let letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function changeTextColor() {
+            let span = document.querySelectorAll('.pro span');
+            span.forEach(function (ele, e) {
+                ele.style.color = getRandomColor();
+            })
+        }
+
+        setInterval(changeTextColor, 200);
+    </script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %} 文章分类-{{ articles.tag }} {% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/index.css') }}">
+    <script src="{{ url_for('static', filename='js/user/index.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="container">
+        <div class="w">
+            <div class="article-item">
+                {% for article in articles.items %}
+                    <div class="article">
+                        <div class="title">
+                            <h4>标题:
+                                <a href="{{ url_for('article.article_detail') }}?aid={{ article.art_id }}">{{ article.title }}</a>
+                            </h4>
+                        </div>
+                        <div class="author">作者: {{ article.author.username }}</div>
+                        <div class="content">{{ article.content | safe }}</div>
+                        <div class="star">
+                            <span class="pub">发布时间: {{ article.pub_time }}</span>
+                            <span class="click">点击量: {{ article.click_num }}</span>
+                            <span class="save">收藏: {{ article.save }}</span>
+                            <span class="love">点赞量: {{ article.love_num }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="paginate">
+                <ul class="pagination">
+                    <li {% if not articles.has_prev %}class="page-item disabled pre"
+                        {% endif %} class="page-item pre">
+                        <a href="{{ url_for('user.index') }}?page={{ articles.prev_num }}">Previous</a>
+                    </li>
+                    {% for page_num in range(1, articles.pages + 1) %}
+                        <li {% if articles.page == page_num %}class="page-item active"
+                            {% else %}class="page-item"{% endif %}>
+                            <a href="{{ url_for('user.index') }}?page={{ page_num }}">{{ page_num }}</a>
+                        </li>
+                    {% endfor %}
+                    <li {% if not articles.has_next %}class="page-item disabled next"
+                        {% endif %} class="page-item next">
+                        <a href="{{ url_for('user.index') }}?page={{ articles.next_num }}">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

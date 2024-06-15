@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}关于我{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/aboutme.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="w me">
+            <div class="me-info">
+                {% if not user.about %}
+                    用户中心设置更多关于我的信息～～～～
+                {% else %}
+                    {{ user.about[0].content | safe }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

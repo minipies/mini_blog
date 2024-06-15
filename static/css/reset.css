@@ -1,0 +1,68 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    /* CSS3 抗锯齿形 让文字显示的更加清晰 */
+    -webkit-font-smoothing: antialiased;
+    background-image: linear-gradient(to left top, rgba(255, 99, 132, 0.8), rgba(54, 162, 235, 0.8));
+    font: 16px/1.5 Microsoft YaHei, Consolas, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+    color: #000;
+}
+
+.w {
+    width: 1328px;
+    margin: 0 auto;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+}
+
+em, i {
+    font-style: normal
+}
+
+li, ul, ol {
+    list-style: none
+}
+
+img {
+    border: 0;
+    width: 100%;
+    height: 100%;
+    vertical-align: middle;
+}
+
+button {
+    cursor: pointer
+}
+
+a {
+    color: #000;
+    text-decoration: none
+}
+
+button, input, textarea, select {
+    font-family: Microsoft YaHei, Consolas, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+}
+
+input {
+    border: none;
+    outline: none;
+    color: #333;
+}
+
+.hide, .none {
+    display: none
+}
+
+
+
+

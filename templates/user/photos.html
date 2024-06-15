@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}我的相册{% endblock %}
+
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/photos.css') }}">
+    <script src="{{ url_for('static', filename='js/user/photo.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="w pictures">
+            <div class="images">
+                {% for photo in photos.items %}
+                    <div class="img">
+                        <img src="http://senanxx2e.hn-bkt.clouddn.com/{{ photo.photo_name }}" alt="">
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="paginate">
+                <div class="pagination">
+                    <ul></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        let ul = document.querySelector('.pagination ul')
+        let totalPages = {{photos.pages}};
+        function ele(totalPages, page) {
+            let li = '';
+            if (page > 1) {
+                li += `<li class="btn prev" onclick="ele(totalPages, {{ photos.page - 1 }})">
+                <a href="{{ url_for('user.my_photo') }}?page={{ photos.prev_num }}">Prev</a></li>`;
+            }
+            if (page < totalPages) {
+                li += `<li class="btn next" onclick="ele(totalPages, {{photos.page + 1}})">
+                <a href="{{ url_for('user.my_photo') }}?page={{ photos.next_num }}">Next</a></li>`;
+            }
+            ul.innerHTML = li;
+        }
+        ele(totalPages, {{photos.page}})
+    </script>
+{% endblock %}

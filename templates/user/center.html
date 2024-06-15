@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% block title %}用户中心{% endblock %}
+{% block links %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user/center.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="w">
+            <header class="header">
+                <ul class="top-head">
+                    <li>用户信息修改</li>
+                    <li>发表文章</li>
+                    <li>管理相册</li>
+                    <li>管理留言</li>
+                    <li>管理评论</li>
+                    <li>关于我设置</li>
+                </ul>
+            </header>
+
+            <section class="section">
+                <!--用户信息修改-->
+                <div class="middle">
+                    <h2 class="user-info">用户信息修改</h2>
+                    <form action="{{ url_for('user.user_update') }}" method="post" enctype="multipart/form-data">
+                        <div class="form-item">
+                            <label for="Username" class="form-label">用户名</label>
+                            <input type="text" name="username" class="form-control" id="Username"
+                                   value="{{ g.user.username }}">
+                        </div>
+                        <div class="form-item">
+                            <label for="PhoneNum" class="form-label">手机号码</label>
+                            <input type="tel" name="phone" class="form-control" id="PhoneNum"
+                                   value="{{ g.user.phone }}">
+                        </div>
+                        <div class="form-item">
+                            <label for="Email" class="form-label">邮箱</label>
+                            <input type="email" name="email" class="form-control" id="Email" value="{{ g.user.email }}">
+                        </div>
+                        <div class="form-item">
+                            <label for="IconFile" class="form-label">上传头像</label>
+                            <input type="file" name="icon" class="file-control" id="IconFile">
+                        </div>
+                        <div class="icon">
+                            <img src="{% if user.avatar %}
+                            	{{ url_for('static', filename=user.avatar) }}
+                            {% else %}
+                            	{{ url_for('static', filename='images/tx.png') }}
+                            {% endif %} " alt="">
+                        </div>
+                        <div class="form-button">
+                            <button type="submit" class="btn btn-primary">用户信息修改</button>
+                        </div>
+                    </form>
+                </div>
+                <!--发表文章-->
+                <div class="middle">
+                    <form action="{{ url_for('article.publish_article') }}" method="post">
+                        <div class="form-item">
+                            <input type="text" name="title" class="form-control" placeholder="文章标题">
+                        </div>
+                        <div class="form-item">
+                            <select class="form-control" name="tag">
+                                <option value="0">选择分类</option>
+                                {% for tag in tags %}
+                                    <option value="{{ tag.tag_id }}">{{ tag.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-item">
+                            <textarea name="content" class="rich-text"></textarea>
+                        </div>
+                        <div class="form-button">
+                            <button type="submit" class="btn-primary art">发布文字</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!--管理相册-->
+                <div class="middle pic">
+                    <form action="{{ url_for('article.photo_album') }}" method="post" enctype="multipart/form-data">
+                        <div class="form-item">
+                            <label for="formFile" class="form-label">图片上传</label>
+                            <input type="file" name="photo" class="file-control" id="Photo">
+                            <input type="submit" value="上传图片" class="btn-upload btn-primary">
+                        </div>
+                    </form>
+                    <div class="photos">
+                        <h3>我的相册</h3>
+                        <div class="images">
+                            {% for photo in photos %}
+                                <div class="img">
+                                    <img src="http://senanxx2e.hn-bkt.clouddn.com/{{ photo.photo_name }}" alt="">
+                                    <button class="btn-del" data-tt="{{ photo.photo_id }}">delete</button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!--留言管理-->
+                <div class="middle">
+                    {% if user.messages %}
+                        <table class="table">
+                            <tr>
+                                <th>序号</th>
+                                <th>留言</th>
+                                <th>时间</th>
+                                <th>操作</th>
+                            </tr>
+                            {% for message in user.messages %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ message.content }}</td>
+                                    <td>{{ message.bd_time }}</td>
+                                    <td class="del-msg">
+                                        <a href="{{ url_for('user.delete_board') }}?bid={{ message.bd_id }}">删除</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                        </table>
+                    {% else %}
+                        <p>还没有如何内容, 赶紧去留言区吹牛吧</p>
+                    {% endif %}
+                </div>
+
+                <!--评论管理-->
+                <div class="middle">
+                    {% if user.comments %}
+                        <table class="table">
+                            <tr>
+                                <th>序号</th>
+                                <th>评论</th>
+                                <th>时间</th>
+                                <th>操作</th>
+                            </tr>
+                            {% for comment in user.comments %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ comment.comment }}</td>
+                                    <td>{{ comment.cmt_time }}</td>
+                                    <td class="del-msg">
+                                        <a href="{{ url_for('article.delete_comment') }}?cmt_id={{ comment.cmt_id }}">删除</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <p>还没有如何的评论</p>
+                    {% endif %}
+                </div>
+
+                <!--关于我-->
+                <div class="middle">
+                    <form action="{{ url_for('user.about_me') }}" method="post">
+                        <div class="form-item">
+                            <textarea name="about" class="rich-text"></textarea>
+                        </div>
+                        <div class="form-button">
+                            <button type="submit" class="btn-primary">更改我的</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='tinymce/tinymce.min.js') }}"></script>
+    <script>
+        window.addEventListener('load', function () {
+            tinymce.init({
+                selector: '.rich-text',
+                width: 900,
+                {#height: 600,#}
+                language: 'zh_CN', //调用放在langs文件夹内的语言包
+                plugins: 'lists,advlist print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link \
+media template code codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave autoresize formatpainter',
+                toolbar: 'code undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | \
+styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | \
+table image media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen | lineheight formatpainter',
+                fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
+                font_formats: '微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif;仿宋体=FangSong,serif;黑体=SimHei,sans-serif;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;',
+                importcss_append: true,
+                skin: 'oxide-dark',
+                images_upload_base_path: '/static/uploads/photo', //图片存放目录
+                images_upload_handler: function (blobInfo, success, failure, progress) {
+                    let formDate = new FormData();
+                    formDate.append('file', blobInfo.blob(), blobInfo.filename);
+                    fetch(
+                        '/article/photo',
+                        {
+                            method: 'POST',
+                            body: formDate
+                        }
+                    ).then(response => response.json()).then(data => {
+                        success(data.image_usl);
+                    })
+                }
+            });
+
+            let editors = tinymce.editors;
+
+            let art = document.querySelector('.btn-primary.art');
+            art.addEventListener('click', function (ev) {
+                let form2 = document.querySelector('.middle:nth-child(2)>form');
+                let form_data = serialize(form2, {empty: true, hash: true});
+                console.log(form_data)
+
+                if (form_data.title.trim() === '') {
+                    ev.preventDefault()
+                }
+                if (form_data.tag === '0') {
+                    ev.preventDefault()
+                }
+                let content = editors[0].getContent()
+                if (!content.trim()) {
+                    ev.preventDefault()
+                }
+            })
+        })
+    </script>
+    <script src="{{ url_for('static', filename='js/user/center.js') }}"></script>
+{% endblock %}

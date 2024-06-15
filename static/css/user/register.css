@@ -1,0 +1,101 @@
+#container {
+    height: 580px;
+}
+
+#container .w h1 {
+    text-align: center;
+    height: 100px;
+    line-height: 100px;
+    margin-bottom: 25px;
+}
+
+#container .form {
+    width: 500px;
+    margin: 0 auto;
+}
+
+.form-group {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.form-label {
+    width: 90px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: #212529;
+}
+
+.form-input {
+    width: 410px;
+    height: 40px;
+    border: 1px solid #dee2e6;
+    overflow: hidden;
+    border-radius: 8px;
+    position: relative;
+}
+
+.form-input input {
+    width: 100%;
+    height: 100%;
+    color: #000;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 0 10px;
+}
+
+.tips {
+    width: 200px;
+    height: 38px;
+    line-height: 38px;
+    text-align: right;
+    border-radius: 8px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+div.form-input input::placeholder {
+    color: #000;
+}
+
+.btn-primary {
+    width: 80px;
+    height: 40px;
+    border-radius: 6px;
+    font-size: 17px;
+    background-color: #0d6efd;
+    color: #fff;
+    transition: all .25s;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+
+}
+
+.form-btn {
+    width: 500px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.agreement {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.agreement input {
+    width: 18px;
+    height: 18px;
+    margin: 0 5px;
+}
+.agreement a {
+    color: #3773f5;
+}

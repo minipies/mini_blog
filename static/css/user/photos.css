@@ -1,0 +1,89 @@
+
+.pictures {
+    padding: 20px;
+    height: 800px;
+}
+
+
+.images {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.img {
+    width: 170px;
+    height: 200px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.img img {
+    display: block;
+    width: 160px;
+    height: 160px;
+    border-radius: 12px;
+}
+
+/* 分 页 pagination*/
+.paginate {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination ul {
+    display: flex;
+    padding: 8px;
+    background-color: #fff;
+    border-radius: 50px;
+}
+
+.pagination ul li {
+    color: #16baaa;
+    list-style: none;
+    line-height: 45px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .3s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pagination ul li.num {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    margin: 0 3px;
+}
+
+.pagination ul li.dots {
+    font-size: 22px;
+    cursor: default;
+}
+
+.pagination ul li.btn {
+    padding: 0 20px;
+}
+
+.pagination ul li.prev {
+    border-radius: 25px 5px 5px 25px;
+}
+
+.pagination ul li.next {
+    border-radius: 5px 25px 25px 5px;
+}
+
+.pagination ul li.active,
+.pagination ul li.num:hover,
+.pagination ul li.btn:hover {
+    background: #16baaa;
+}
+
+.pagination ul li.num:hover a,
+.pagination ul li.btn:hover a {
+    color: #fff;
+
+}
