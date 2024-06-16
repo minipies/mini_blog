@@ -19,14 +19,8 @@ class Article(BaseModel):
     click_num = db.Column(db.Integer, default=0)
     save_num = db.Column(db.Integer, default=0)
     love_num = db.Column(db.Integer, default=0)
-
     user_id = db.Column(db.Integer, db.ForeignKey('tb_user.user_id'), nullable=False)
-    '''假设你已经有了一个文章实例 article  
-    user_of_article = article.author
-    author是User模型的属性中backref的值
-    '''
     comments = db.relationship('Comment', backref='article')
-
     tag_id = db.Column(db.Integer, db.ForeignKey('tb_tag.tag_id'), nullable=False)
 
 

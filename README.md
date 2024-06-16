@@ -9,7 +9,7 @@
 ```
    flask db init 初始化迁移文件
    flask db migrate 生成迁移文件
-   flask db uyograde 迁移同步到你的MySQL数据库中
+   flask db upgrade 迁移同步到你的MySQL数据库中
 ```
 
 5. 注意在启动app.py时, 需要先启动redis服务

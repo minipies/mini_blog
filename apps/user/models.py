@@ -14,14 +14,7 @@ class User(BaseModel):
     avatar = db.Column(db.String(128))
     rgs_time = db.Column(db.DateTime, default=datetime.now)
     is_del = db.Column(db.Boolean, default=False)
-
-    # 定义和用户关联的文章列表（一对多）
     articles = db.relationship('Article', backref='author', lazy=True)
-    '''
-    # 假设你已经有了一个用户实例 user  
-    articles_by_user = user.articles
-    articles是User模型的属性
-    '''
     comments = db.relationship('Comment', backref='user')
 
     @property

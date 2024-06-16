@@ -22,9 +22,6 @@ allowed_path = [
     '/article/pub_cmt', '/user/aboutme', '/user/showme',
 ]
 
-@user_bp.app_template_filter('jm')
-def content_decode(content):
-    return content.decode('utf-8')
 
 @user_bp.before_app_request
 def before_you_request():
@@ -252,8 +249,6 @@ def my_photo():
 def about_me():
     content = request.form.get('about')
     print(content)
-    # try:
-
     has_me = AboutMe.query.filter_by(user_id=g.user.user_id).first()
     if has_me.content:
         has_me.content = content
@@ -263,9 +258,6 @@ def about_me():
         me.content = content
         me.user_id = g.user.user_id
         me.yes()
-    # except Exception as e:
-    #     return redirect(url_for('user.user_center'))
-    # else:
     return render_template('user/aboutme.html', user=g.user)
 
 

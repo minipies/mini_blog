@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template
-from flask import url_for, g, current_app
+from flask import url_for, g
 from flask import jsonify, request
 from flask import redirect, session
 from ..utils import upload_to_qiniu, delete_to_qiniu
@@ -59,19 +59,16 @@ def article_love():  # 点赞
 @article_bp.route('/photo', methods=['GET', 'POST'])
 def photo_album():
     if request.method == 'POST':
-        pic = request.form.get('file')
-        pic2 = request.files.get('photo')
-        print(pic, type(pic))
-        print(pic2, type(pic2))
-        # ret, info = upload_to_qiniu(pic)
-        # if info.status_code == 200:
-        #     photo = Photo()
-        #     photo.photo_name = ret['key']
-        #     photo.user_id = g.user.user_id
-        #     photo.yes()
-        #     return redirect(url_for('user.user_center'))
+        pic = request.files.get('photo')
+        ret, info = upload_to_qiniu(pic)
+        if info.status_code == 200:
+            photo = Photo()
+            photo.photo_name = ret['key']
+            photo.user_id = g.user.user_id
+            photo.yes()
+            return redirect(url_for('user.user_center'))
         return 'post'
-    # return 'get'
+    return 'get'
 
 
 @article_bp.route('/photo_del')
